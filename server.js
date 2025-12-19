@@ -2,15 +2,25 @@ import http from 'http';
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
   auth: {
     user: 'xyraofficialsup@gmail.com',
     pass: 'dsqo zslt oznd qlqa'
   }
 });
 
+// Verify connection at startup
+transporter.verify((error, success) => {
+  if (error) {
+    console.error('❌ Email config error:', error.message);
+  } else {
+    console.log('✅ Email service ready');
+  }
+});
+
 const server = http.createServer(async (req, res) => {
-  // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -61,7 +71,7 @@ const server = http.createServer(async (req, res) => {
         `;
 
         const mailOptions = {
-          from: 'Xyra Termux <xyraofficialsup@gmail.com>',
+          from: 'xyraofficialsup@gmail.com',
           to: 'xyraofficialsup@gmail.com',
           replyTo: email,
           subject: `[${type.toUpperCase()}] ${subject}`,
@@ -69,11 +79,12 @@ const server = http.createServer(async (req, res) => {
         };
 
         await transporter.sendMail(mailOptions);
+        console.log(`📧 Feedback sent: ${fullName} - ${subject}`);
         
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: true, message: 'Feedback sent successfully' }));
       } catch (error) {
-        console.error('Error sending feedback:', error);
+        console.error('❌ Error:', error.message);
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Failed to send feedback', details: error.message }));
       }
@@ -86,5 +97,13 @@ const server = http.createServer(async (req, res) => {
 
 const PORT = 3001;
 server.listen(PORT, '127.0.0.1', () => {
-  console.log(`\n✅ Feedback server running on http://localhost:${PORT}`);
+  console.log(`\n✅ Feedback server running on http://localhost:${PORT}\n`);
+});
+
+// Handle errors
+server.on('error', (error) => {
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use`);
+    process.exit(1);
+  }
 });
