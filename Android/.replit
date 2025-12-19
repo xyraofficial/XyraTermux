@@ -1,0 +1,47 @@
+modules = ["java-graalvm22.3", "python-3.11"]
+[agent]
+expertMode = true
+integrations = ["firebase_barebones_flask:1.0.0"]
+
+[nix]
+channel = "stable-25_05"
+packages = ["cargo", "libiconv", "openssl", "postgresql", "rustc", "unzip", "zip"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "gunicorn --bind 0.0.0.0:5000 --reuse-port --reload main:app"
+waitForPort = 5000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["gunicorn", "--bind", "0.0.0.0:5000", "main:app"]
+
+[userenv]
+
+[userenv.shared]
+SUPABASE_PROJECT_ID = "figcqxynrcnimagpswqn"
+SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpZ2NxeHlucmNuaW1hZ3Bzd3FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1Mzk3NDYsImV4cCI6MjA4MTExNTc0Nn0.uGVsFxsbLrSjtrli80UDrg96y1JRQyuMc7chQMVDG1A"
+SUPABASE_URL = "https://figcqxynrcnimagpswqn.supabase.co"
