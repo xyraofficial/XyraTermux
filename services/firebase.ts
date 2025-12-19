@@ -5,7 +5,8 @@ import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
@@ -40,9 +41,14 @@ export const authService = {
     return signInWithEmailAndPassword(auth, email, password);
   },
 
-  // Google OAuth
+  // Google OAuth (uses redirect for WebView compatibility)
   signInWithGoogle: () => {
-    return signInWithPopup(auth, googleProvider);
+    return signInWithRedirect(auth, googleProvider);
+  },
+
+  // Handle redirect result (call on app mount)
+  handleRedirectResult: () => {
+    return getRedirectResult(auth);
   },
 
   // Sign Out

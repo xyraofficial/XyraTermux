@@ -43,14 +43,11 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
   const handleGoogleSignIn = async () => {
     setError('');
-    setLoading(true);
     try {
       await signInWithGoogle();
-      onAuthSuccess();
+      // Note: With redirect, page will redirect to Google, no need to hide loading
     } catch (err: any) {
       setError(err.message || 'Google sign-in failed');
-    } finally {
-      setLoading(false);
     }
   };
 
