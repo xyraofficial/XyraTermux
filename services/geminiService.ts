@@ -3,11 +3,14 @@ import { GoogleGenAI } from "@google/genai";
 
 export const askXyra = async (prompt: string): Promise<string> => {
   // NOTE: This key must be set in the environment where the app runs.
+  // A new instance is created here to ensure we use the most up-to-date API key.
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      // Xyra is an advanced assistant specializing in Linux and coding, 
+      // which qualifies as a Complex Text Task; hence using gemini-3-pro-preview.
+      model: 'gemini-3-pro-preview',
       contents: prompt,
       config: {
         systemInstruction: `You are Xyra, an advanced Termux cyber-assistant. 
@@ -24,6 +27,7 @@ export const askXyra = async (prompt: string): Promise<string> => {
       },
     });
 
+    // Access the .text property directly as it is a getter, not a function call.
     return response.text || "Xyra connection interrupted.";
   } catch (error) {
     console.error("Xyra API Error:", error);

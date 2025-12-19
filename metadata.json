@@ -1,7 +1,5 @@
 {
   "name": "XyraTermux",
   "description": "Next-gen responsive Termux assistant and script generator.",
-  "requestFramePermissions": [
-    "microphone"
-  ]
+  "requestFramePermissions": []
 }
