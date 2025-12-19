@@ -16,7 +16,6 @@ import android.content.pm.PackageManager;
 
 public class MainActivity extends Activity {
     private WebView webView;
-    private View loadingScreen;
     private static final String GOOGLE_AUTH_DOMAIN = "accounts.google.com";
     private static final String SUPABASE_AUTH_DOMAIN = "pikkpwouwavgrpanrdzc.supabase.co";
 
@@ -64,9 +63,7 @@ public class MainActivity extends Activity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                if (loadingScreen != null && loadingScreen.getVisibility() == View.VISIBLE) {
-                    loadingScreen.setVisibility(View.GONE);
-                }
+                // Page loaded
             }
             
             @Override
@@ -109,10 +106,7 @@ public class MainActivity extends Activity {
             }
         });
         
-        loadingScreen = getLayoutInflater().inflate(R.layout.loading_screen, null);
-        
         mainContainer.addView(webView);
-        mainContainer.addView(loadingScreen);
         
         // Load Vercel app
         webView.loadUrl("https://xyra-termux.vercel.app/");
