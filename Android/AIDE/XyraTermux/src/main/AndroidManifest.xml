@@ -11,6 +11,7 @@
     <!-- Optional permissions for enhanced features -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     
     <application 
         android:label="Xyra Termux" 
