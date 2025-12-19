@@ -12,6 +12,15 @@ export const MODULES: ModuleItem[] = [
     complexity: 'Low'
   },
   {
+    id: 'setup-storage',
+    name: 'Storage Access',
+    category: 'System',
+    description: 'Grants Termux access to shared storage (Photos, Downloads, etc).',
+    command: 'termux-setup-storage',
+    tags: ['setup', 'permissions'],
+    complexity: 'Low'
+  },
+  {
     id: 'net-scan',
     name: 'Network Mapper',
     category: 'Network',
@@ -39,6 +48,15 @@ export const MODULES: ModuleItem[] = [
     complexity: 'Medium'
   },
   {
+    id: 'ffmpeg-conv',
+    name: 'FFmpeg Converter',
+    category: 'Media',
+    description: 'Converts media files between formats (e.g., MKV to MP4).',
+    command: 'ffmpeg -i input.mkv -c copy output.mp4',
+    tags: ['media', 'processing'],
+    complexity: 'Medium'
+  },
+  {
     id: 'git-config',
     name: 'Git Setup',
     category: 'Dev',
@@ -46,6 +64,33 @@ export const MODULES: ModuleItem[] = [
     command: 'git config --global user.name "Your Name" && git config --global user.email "you@example.com"',
     tags: ['git', 'setup'],
     complexity: 'Low'
+  },
+  {
+    id: 'nodejs-lts',
+    name: 'Node.js Environment',
+    category: 'Dev',
+    description: 'Installs Node.js LTS and NPM for JavaScript development.',
+    command: 'pkg install nodejs-lts',
+    tags: ['javascript', 'dev'],
+    complexity: 'Low'
+  },
+  {
+    id: 'proot-distro',
+    name: 'Linux Distros',
+    category: 'System',
+    description: 'Install full Linux distributions (Ubuntu, Arch, etc) inside Termux.',
+    command: 'pkg install proot-distro && proot-distro list',
+    tags: ['linux', 'virtualization'],
+    complexity: 'High'
+  },
+  {
+    id: 'ssh-server',
+    name: 'SSH Server',
+    category: 'Network',
+    description: 'Start OpenSSH server to access Termux from your PC.',
+    command: 'sshd && echo "SSHD Started. Port 8022"',
+    tags: ['remote', 'server'],
+    complexity: 'Medium'
   },
   {
     id: 'termux-api',
@@ -64,6 +109,24 @@ export const MODULES: ModuleItem[] = [
     command: 'pkg install metasploit',
     tags: ['hacking', 'advanced'],
     complexity: 'High'
+  },
+  {
+    id: 'aria2',
+    name: 'Aria2 Downloader',
+    category: 'Utility',
+    description: 'High speed multi-protocol and multi-source download utility.',
+    command: 'aria2c -x 16 [URL]',
+    tags: ['download', 'utility'],
+    complexity: 'Medium'
+  },
+  {
+    id: 'vim-editor',
+    name: 'Vim Editor',
+    category: 'Dev',
+    description: 'Install and configure the ubiquitous text editor.',
+    command: 'pkg install vim',
+    tags: ['editor', 'cli'],
+    complexity: 'Low'
   }
 ];
 
