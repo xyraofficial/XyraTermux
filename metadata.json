@@ -1,8 +1,7 @@
 {
-  "name": "TermuxToolBox iOS",
-  "description": "A comprehensive Termux utility guide and AI script assistant with a sleek iOS-inspired design. Explore tools, learn commands, and generate scripts.",
+  "name": "XyraTermux",
+  "description": "Next-gen responsive Termux assistant and script generator.",
   "requestFramePermissions": [
-    "camera",
     "microphone"
   ]
 }

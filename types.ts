@@ -1,30 +1,27 @@
 
-export interface TermuxTool {
+export type ViewType = 'dashboard' | 'modules' | 'neurolink' | 'settings';
+
+export interface ModuleItem {
   id: string;
   name: string;
-  category: ToolCategory;
+  category: string;
   description: string;
-  installCommand: string;
-  usage: string;
-  stars?: number;
-  sourceUrl?: string;
-  size?: string;
-  version?: string;
+  command: string;
+  tags: string[];
+  complexity: 'Low' | 'Medium' | 'High';
 }
-
-export enum ToolCategory {
-  SYSTEM = 'System',
-  NETWORK = 'Network',
-  HACKING = 'Security',
-  PROGRAMMING = 'Coding',
-  UTILITIES = 'Utilities',
-  SOURCES = 'Sources'
-}
-
-export type TabType = 'explore' | 'tools' | 'assistant' | 'settings';
 
 export interface ChatMessage {
-  role: 'user' | 'assistant';
+  id: string;
+  role: 'user' | 'ai';
   content: string;
   timestamp: number;
+  isCode?: boolean;
+}
+
+export interface SystemStat {
+  label: string;
+  value: string;
+  unit: string;
+  status: 'optimal' | 'warning' | 'critical';
 }

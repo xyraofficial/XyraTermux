@@ -1,63 +1,69 @@
 
 import React from 'react';
-import { ChevronRight, Shield, Bell, Moon, BookOpen, ExternalLink, Github } from 'lucide-react';
+import { Shield, Bell, Smartphone, Monitor, Code, ToggleRight } from 'lucide-react';
 
-const SettingsScreen: React.FC = () => {
+const SettingsView: React.FC = () => {
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
-      <section className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-        <div className="px-4 py-3 border-b border-gray-50 flex justify-between items-center cursor-pointer hover:bg-gray-50">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
-              <Bell size={18} />
-            </div>
-            <span className="font-medium text-gray-700">Notifications</span>
-          </div>
-          <ChevronRight size={18} className="text-gray-300" />
-        </div>
-        <div className="px-4 py-3 border-b border-gray-50 flex justify-between items-center cursor-pointer hover:bg-gray-50">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center">
-              <Moon size={18} />
-            </div>
-            <span className="font-medium text-gray-700">Appearance</span>
-          </div>
-          <ChevronRight size={18} className="text-gray-300" />
-        </div>
-        <div className="px-4 py-3 flex justify-between items-center cursor-pointer hover:bg-gray-50">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
-              <Shield size={18} />
-            </div>
-            <span className="font-medium text-gray-700">Privacy & Security</span>
-          </div>
-          <ChevronRight size={18} className="text-gray-300" />
-        </div>
-      </section>
+    <div className="p-4 md:p-8 max-w-2xl mx-auto animate-in fade-in duration-500">
+      <h2 className="text-xl font-bold mb-6 text-slate-100">System Configuration</h2>
 
-      <section className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-        <h3 className="px-4 pt-4 pb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">Resources</h3>
-        <div className="px-4 py-3 border-b border-gray-50 flex justify-between items-center cursor-pointer hover:bg-gray-50">
-          <div className="flex items-center gap-3">
-            <BookOpen size={18} className="text-gray-400" />
-            <span className="font-medium text-gray-700">Official Wiki</span>
+      <div className="space-y-6">
+        
+        {/* Section */}
+        <div className="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 bg-slate-900 border-b border-slate-800 flex items-center gap-2">
+            <Monitor size={16} className="text-primary-400" />
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Interface</span>
           </div>
-          <ExternalLink size={16} className="text-gray-300" />
-        </div>
-        <div className="px-4 py-3 flex justify-between items-center cursor-pointer hover:bg-gray-50">
-          <div className="flex items-center gap-3">
-            <Github size={18} className="text-gray-400" />
-            <span className="font-medium text-gray-700">Contribute</span>
+          <div className="p-4 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-slate-200">High Contrast Mode</p>
+                <p className="text-xs text-slate-500">Increases visibility for terminals</p>
+              </div>
+              <ToggleRight size={24} className="text-slate-600 cursor-pointer hover:text-primary-400" />
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-slate-200">Animations</p>
+                <p className="text-xs text-slate-500">Reduce motion for performance</p>
+              </div>
+              <ToggleRight size={24} className="text-primary-400 cursor-pointer" />
+            </div>
           </div>
-          <ExternalLink size={16} className="text-gray-300" />
         </div>
-      </section>
 
-      <div className="text-center">
-        <p className="text-xs text-gray-400 font-medium italic">TermuxToolBox v1.0.4 - Designed with ♥ for the community</p>
+        {/* Section */}
+        <div className="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 bg-slate-900 border-b border-slate-800 flex items-center gap-2">
+            <Code size={16} className="text-primary-400" />
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Termux Integration</span>
+          </div>
+          <div className="p-4 space-y-4">
+             <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-slate-200">Auto-Copy Commands</p>
+                <p className="text-xs text-slate-500">Automatically copy generated code</p>
+              </div>
+              <ToggleRight size={24} className="text-primary-400 cursor-pointer" />
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-slate-200">Safety Check</p>
+                <p className="text-xs text-slate-500">Scan generated scripts for risk</p>
+              </div>
+              <ToggleRight size={24} className="text-primary-400 cursor-pointer" />
+            </div>
+          </div>
+        </div>
+
+        <div className="text-center pt-8">
+           <p className="text-xs text-slate-600 font-mono">XYRA-TERM-UI // BUILD 2024.10.15</p>
+        </div>
+
       </div>
     </div>
   );
 };
 
-export default SettingsScreen;
+export default SettingsView;

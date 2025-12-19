@@ -1,152 +1,133 @@
 
 import React, { useState } from 'react';
-import { TOOLS_DATA } from '../constants';
-import { Search, Terminal, Copy, Check, ChevronLeft, Star, Download, ShieldCheck, Share2 } from 'lucide-react';
-import { TermuxTool } from '../types';
+import { MODULES } from '../constants';
+import { Search, Terminal, ChevronRight, Copy, Check } from 'lucide-react';
+import { ModuleItem } from '../types';
 
-const ToolsScreen: React.FC = () => {
-  const [search, setSearch] = useState('');
-  const [selectedTool, setSelectedTool] = useState<TermuxTool | null>(null);
+const LibraryView: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selected, setSelected] = useState<ModuleItem | null>(null);
   const [copied, setCopied] = useState(false);
 
-  const filteredTools = TOOLS_DATA.filter(t => 
-    t.name.toLowerCase().includes(search.toLowerCase()) || 
-    t.category.toLowerCase().includes(search.toLowerCase())
+  const filtered = MODULES.filter(m => 
+    m.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    m.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
+  const copyCmd = (cmd: string) => {
+    navigator.clipboard.writeText(cmd);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  if (selectedTool) {
-    return (
-      <div className="animate-in slide-in-from-right-10 duration-400 space-y-6 pb-20">
-        <div className="flex justify-between items-center -mx-2 mb-2">
-          <button 
-            onClick={() => setSelectedTool(null)}
-            className="text-blue-500 font-semibold flex items-center gap-0.5 px-2 py-1"
-          >
-            <ChevronLeft size={24} /> Back
-          </button>
-          <button className="text-blue-500 p-2 rounded-full hover:bg-gray-100">
-            <Share2 size={20} />
-          </button>
-        </div>
-
-        <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100">
-          <div className="flex flex-col items-center text-center mb-8">
-            <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-[1.8rem] flex items-center justify-center shadow-lg shadow-blue-100 mb-6">
-              <Terminal className="text-white" size={48} />
-            </div>
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">{selectedTool.name}</h2>
-            <p className="text-blue-500 font-bold uppercase tracking-[0.2em] text-[10px] mt-1">{selectedTool.category}</p>
-            
-            <div className="flex gap-8 mt-6 w-full border-y border-gray-50 py-4">
-              <div className="flex-1 text-center">
-                <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Rating</p>
-                <p className="text-lg font-bold text-gray-700">{selectedTool.stars} <Star className="inline mb-1 text-yellow-500" size={14} fill="currentColor" /></p>
-              </div>
-              <div className="flex-1 text-center border-x border-gray-50">
-                <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Size</p>
-                <p className="text-lg font-bold text-gray-700">{selectedTool.size || 'N/A'}</p>
-              </div>
-              <div className="flex-1 text-center">
-                <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Version</p>
-                <p className="text-lg font-bold text-gray-700">{selectedTool.version}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-lg font-bold mb-3">About</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{selectedTool.description}</p>
-            </div>
-
-            <div className="space-y-5">
-              <div>
-                <div className="flex justify-between items-center mb-2 px-1">
-                  <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Installation</h3>
-                  <ShieldCheck size={16} className="text-green-500" />
-                </div>
-                <div className="bg-gray-50 p-4 rounded-2xl flex justify-between items-center group active:bg-gray-100 transition-colors cursor-pointer" onClick={() => copyToClipboard(selectedTool.installCommand)}>
-                  <code className="text-sm font-mono text-pink-600 break-all">{selectedTool.installCommand}</code>
-                  <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-100 text-gray-400 group-hover:text-blue-500">
-                    {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2 px-1">Execution</h3>
-                <div className="bg-gray-900 p-5 rounded-2xl shadow-inner border border-gray-800">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                    <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  </div>
-                  <code className="text-sm font-mono text-green-400 leading-relaxed block overflow-x-auto">$ {selectedTool.usage}</code>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <button className="w-full mt-10 bg-blue-600 text-white font-bold py-4 rounded-[1.2rem] shadow-xl shadow-blue-100 hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-            <Download size={20} />
-            Add to Environment
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-5 animate-in fade-in duration-400 pb-10">
-      <div className="sticky top-0 z-10 py-2">
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-          <input 
-            type="text" 
-            placeholder="Search Packages..."
-            className="w-full bg-white/70 ios-blur border border-gray-100 rounded-2xl py-4 pl-12 pr-4 text-base font-medium focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all placeholder:text-gray-400 shadow-sm"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+    <div className="h-full flex flex-col md:flex-row animate-in fade-in duration-300">
+      
+      {/* Search & List Panel */}
+      <div className={`flex-1 flex flex-col p-4 md:p-6 ${selected ? 'hidden md:flex' : 'flex'}`}>
+        <div className="mb-6">
+          <h2 className="text-xl font-bold mb-4 tracking-tight">Module Library</h2>
+          <div className="relative group">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-400 transition-colors" size={18} />
+            <input 
+              type="text"
+              placeholder="Search scripts (e.g., nmap, update)..."
+              className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-10 pr-4 text-sm text-slate-100 focus:outline-none focus:border-primary-500/50 focus:ring-1 focus:ring-primary-500/50 transition-all placeholder:text-slate-600"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto space-y-2 pr-1 scrollbar-hide">
+          {filtered.map(item => (
+            <div 
+              key={item.id}
+              onClick={() => setSelected(item)}
+              className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                selected?.id === item.id 
+                  ? 'bg-primary-500/10 border-primary-500/30' 
+                  : 'bg-slate-900/30 border-slate-800 hover:bg-slate-800/50'
+              }`}
+            >
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className={`p-2 rounded-lg ${selected?.id === item.id ? 'bg-primary-500/20 text-primary-400' : 'bg-slate-800 text-slate-400'}`}>
+                    <Terminal size={18} />
+                  </div>
+                  <div>
+                    <h4 className={`font-bold text-sm ${selected?.id === item.id ? 'text-primary-200' : 'text-slate-200'}`}>{item.name}</h4>
+                    <span className="text-[10px] text-slate-500 font-mono uppercase">{item.category}</span>
+                  </div>
+                </div>
+                <ChevronRight size={16} className={`text-slate-600 ${selected?.id === item.id ? 'text-primary-400' : ''}`} />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
-        {filteredTools.map(tool => (
-          <div 
-            key={tool.id} 
-            onClick={() => setSelectedTool(tool)}
-            className="bg-white p-5 rounded-[1.8rem] shadow-sm border border-gray-100 flex items-center gap-5 cursor-pointer active:scale-[0.97] hover:bg-gray-50 transition-all group"
-          >
-            <div className="w-16 h-16 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl flex items-center justify-center text-blue-500 group-hover:from-blue-50 group-hover:to-blue-100 transition-colors">
-              <Terminal size={32} />
+      {/* Detail Panel */}
+      <div className={`flex-1 md:border-l md:border-slate-800 md:bg-slate-950/30 p-4 md:p-6 ${selected ? 'flex' : 'hidden md:flex'} flex-col`}>
+        {selected ? (
+          <div className="animate-in slide-in-from-right-4 duration-300">
+            <button 
+              onClick={() => setSelected(null)}
+              className="md:hidden flex items-center gap-1 text-slate-400 mb-4 hover:text-white"
+            >
+              <ChevronRight className="rotate-180" size={16} /> Back
+            </button>
+
+            <div className="mb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <h2 className="text-2xl font-bold text-white">{selected.name}</h2>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                  selected.complexity === 'High' ? 'border-red-500/30 text-red-400 bg-red-500/10' :
+                  selected.complexity === 'Medium' ? 'border-yellow-500/30 text-yellow-400 bg-yellow-500/10' :
+                  'border-green-500/30 text-green-400 bg-green-500/10'
+                }`}>
+                  {selected.complexity}
+                </span>
+              </div>
+              <p className="text-slate-400 text-sm leading-relaxed">{selected.description}</p>
             </div>
-            <div className="flex-1 min-w-0">
-              <h4 className="font-bold text-gray-900 text-lg leading-tight truncate">{tool.name}</h4>
-              <p className="text-xs text-gray-400 font-bold uppercase tracking-tight mt-0.5">{tool.category} • {tool.version}</p>
-              <div className="flex items-center gap-3 mt-2">
-                <div className="flex items-center gap-1">
-                  <Star size={12} className="text-yellow-500" fill="currentColor" />
-                  <span className="text-xs font-bold text-gray-600">{tool.stars}</span>
+
+            <div className="space-y-6">
+              <div className="bg-black/50 rounded-xl border border-slate-800 overflow-hidden">
+                <div className="flex justify-between items-center px-4 py-2 bg-slate-900/50 border-b border-slate-800">
+                  <span className="text-[10px] font-mono text-slate-500 uppercase">Command</span>
+                  <button onClick={() => copyCmd(selected.command)} className="text-slate-400 hover:text-primary-400">
+                    {copied ? <Check size={14} className="text-green-400"/> : <Copy size={14} />}
+                  </button>
                 </div>
-                <span className="text-[10px] text-gray-300">•</span>
-                <span className="text-xs font-bold text-blue-500/70">{tool.size || 'Small'}</span>
+                <div className="p-4 overflow-x-auto">
+                  <code className="text-sm font-mono text-primary-300 whitespace-nowrap">
+                    {selected.command}
+                  </code>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Tags</h4>
+                <div className="flex flex-wrap gap-2">
+                  {selected.tags.map(tag => (
+                    <span key={tag} className="text-xs px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="bg-gray-100 p-2 rounded-full text-blue-500 group-hover:bg-blue-600 group-hover:text-white transition-all">
-              <Download size={16} />
-            </div>
           </div>
-        ))}
+        ) : (
+          <div className="h-full flex flex-col items-center justify-center text-slate-600">
+            <Terminal size={48} className="mb-4 opacity-20" />
+            <p className="text-sm">Select a module to view details</p>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default ToolsScreen;
+export default LibraryView;

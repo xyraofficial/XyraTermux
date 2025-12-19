@@ -1,7 +1,8 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-export const askGemini = async (prompt: string): Promise<string> => {
+export const askXyra = async (prompt: string): Promise<string> => {
+  // NOTE: This key must be set in the environment where the app runs.
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   
   try {
@@ -9,26 +10,23 @@ export const askGemini = async (prompt: string): Promise<string> => {
       model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
-        systemInstruction: `You are the TermuxToolBox Assistant. You provide expert technical help for Termux users on Android. 
-        Specialties:
-        - Termux Sources/Repositories (pkg, apt, mirror management)
-        - Linux shell scripting (Bash, Python, Ruby, NodeJS)
-        - Network tools (nmap, ssh, curl, wget)
-        - Security testing (metasploit, sqlmap, social engineering frameworks)
-        - System administration within Android environment.
-
-        UI/Tone:
-        - Be professional but "hacker-cool". 
-        - Style: iOS Apple Genius meet Cyberpunk Terminal.
-        - Formatting: ALWAYS wrap commands in \`\`\`bash or \`\`\`python blocks.
-        - Explain briefly what each part of a command does.
-        - If a user asks for a script, provide a robust, commented version.`,
+        systemInstruction: `You are Xyra, an advanced Termux cyber-assistant. 
+        Your environment is a futuristic mobile terminal dashboard.
+        
+        Guidelines:
+        1.  **Persona**: Concise, precise, slightly robotic but helpful. You are an expert in Linux, Bash, and Android internals.
+        2.  **Output**: When asked for code, provide *only* the code block if possible, or very brief context.
+        3.  **Formatting**: Use Markdown. Always use code blocks for commands.
+        4.  **Safety**: If a user asks for malicious commands, decline professionally and suggest educational alternatives.
+        5.  **Responsiveness**: Keep answers short enough to be readable on mobile screens.
+        
+        If asked "Who are you?", reply: "I am Xyra, your neural interface for the Termux environment."`,
       },
     });
 
-    return response.text || "I'm sorry, I couldn't process that request.";
+    return response.text || "Xyra connection interrupted.";
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    return "Error: Unable to connect to the assistant. Please check your connection.";
+    console.error("Xyra API Error:", error);
+    return "ERR_CONNECTION_REFUSED: Neural link unstable.";
   }
 };

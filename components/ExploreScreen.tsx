@@ -1,111 +1,87 @@
 
 import React from 'react';
-import { TOOLS_DATA, CATEGORIES, SYSTEM_INFO } from '../constants';
-import { Terminal, Star, ChevronRight, Info, Cpu, Folder, Database } from 'lucide-react';
+import { MOCK_STATS, MODULES } from '../constants';
+import { Activity, Zap, Cpu, ArrowUpRight, Terminal } from 'lucide-react';
 
-const ExploreScreen: React.FC = () => {
-  const featured = TOOLS_DATA.slice(0, 4);
-
+// Renaming for clarity in the file map, but logically this is "Dashboard"
+const HomeView: React.FC = () => {
   return (
-    <div className="space-y-6 pb-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {/* Header Info Card */}
-      <div className="bg-white p-5 rounded-3xl shadow-sm border border-gray-100">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400">Environment Status</h2>
-          <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+    <div className="p-4 md:p-8 space-y-6 animate-in fade-in duration-500">
+      
+      {/* Welcome Banner */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary-600 to-blue-600 p-6 shadow-lg shadow-primary-500/10">
+        <div className="absolute top-0 right-0 p-8 opacity-10 transform translate-x-10 -translate-y-10">
+          <Terminal size={120} />
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <InfoItem icon={<Cpu size={14}/>} label="Arch" value={SYSTEM_INFO.arch} />
-          <InfoItem icon={<Database size={14}/>} label="Prefix" value="~/usr" />
-          <InfoItem icon={<Folder size={14}/>} label="Home" value="/data/.../home" />
-          <InfoItem icon={<Terminal size={14}/>} label="Shell" value="bash" />
-        </div>
+        <h2 className="text-2xl font-bold text-white mb-2 relative z-10">Welcome back, User</h2>
+        <p className="text-blue-100 text-sm max-w-md relative z-10 mb-4">
+          Xyra systems are fully operational. Termux environment scanning complete. 
+          Ready for command input.
+        </p>
+        <button className="bg-white/10 hover:bg-white/20 backdrop-blur border border-white/20 text-white text-xs font-bold py-2 px-4 rounded-lg transition-all flex items-center gap-2">
+          <Terminal size={14} /> Initiate Quick Scan
+        </button>
       </div>
 
-      {/* Hero Card */}
-      <div className="bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-500 p-6 rounded-3xl text-white shadow-xl shadow-blue-200 overflow-hidden relative">
-        <div className="absolute top-0 right-0 -mr-4 -mt-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-        <h2 className="text-2xl font-bold mb-2">Termux Toolbox</h2>
-        <p className="text-blue-100 text-sm mb-5 leading-relaxed">The ultimate companion for your Android terminal environment.</p>
-        <div className="flex gap-2">
-          <button className="bg-white text-blue-600 px-5 py-2.5 rounded-2xl text-xs font-bold hover:bg-blue-50 transition-all shadow-lg active:scale-95">
-            Quick Start
-          </button>
-          <button className="bg-white/20 backdrop-blur-md text-white px-5 py-2.5 rounded-2xl text-xs font-bold hover:bg-white/30 transition-all active:scale-95">
-            Mirror List
-          </button>
-        </div>
-      </div>
-
-      {/* Featured Tools Grid */}
-      <section>
-        <div className="flex justify-between items-center mb-4 px-1">
-          <h3 className="text-xl font-bold text-gray-900 tracking-tight">Essential Tools</h3>
-          <button className="text-blue-500 text-sm font-semibold">See More</button>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          {featured.map(tool => (
-            <div key={tool.id} className="bg-white p-4 rounded-3xl shadow-sm border border-gray-100 hover:border-blue-100 transition-all active:scale-95">
-              <div className="w-10 h-10 bg-gray-50 rounded-2xl flex items-center justify-center mb-3">
-                <Terminal className="text-blue-500" size={20} />
-              </div>
-              <h4 className="font-bold text-gray-900 text-sm">{tool.name}</h4>
-              <p className="text-[10px] text-gray-400 font-bold uppercase mt-0.5 tracking-tighter">{tool.category}</p>
-              <div className="flex items-center gap-1 text-yellow-500 mt-2">
-                <Star size={10} fill="currentColor" />
-                <span className="text-[10px] font-bold">{tool.stars}</span>
-              </div>
+      {/* System Stats Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        {MOCK_STATS.map((stat, i) => (
+          <div key={i} className="glass-panel p-4 rounded-xl border border-slate-800 bg-slate-900/50 hover:bg-slate-800/70 transition-colors">
+            <div className="flex justify-between items-start mb-2">
+              <span className="text-slate-400 text-xs font-mono uppercase tracking-wider">{stat.label}</span>
+              <Activity size={14} className={stat.status === 'optimal' ? 'text-green-400' : 'text-yellow-400'} />
             </div>
-          ))}
-        </div>
-      </section>
+            <div className="flex items-baseline gap-1">
+              <span className="text-2xl font-bold font-mono text-slate-100">{stat.value}</span>
+              <span className="text-[10px] text-slate-500 font-bold">{stat.unit}</span>
+            </div>
+          </div>
+        ))}
+      </div>
 
-      {/* iOS Settings Style Category List */}
+      {/* Quick Actions / Recent Modules */}
       <section>
-        <h3 className="text-xl font-bold text-gray-900 mb-4 px-1 tracking-tight">Functions</h3>
-        <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
-          {CATEGORIES.map((category, idx) => (
-            <div 
-              key={category} 
-              className={`px-5 py-4 flex justify-between items-center cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors ${idx !== CATEGORIES.length - 1 ? 'border-b border-gray-50' : ''}`}
-            >
-              <div className="flex items-center gap-4">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${getCategoryColor(category)}`}>
-                  <Info size={16} className="text-white" />
+        <h3 className="text-slate-400 text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+          <Zap size={16} className="text-primary-400" /> Recommended Modules
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {MODULES.slice(0, 3).map((mod) => (
+            <div key={mod.id} className="group p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-primary-500/50 transition-all cursor-pointer">
+              <div className="flex justify-between items-start mb-2">
+                <div className="bg-slate-800 group-hover:bg-primary-500/20 p-2 rounded-lg text-slate-400 group-hover:text-primary-400 transition-colors">
+                  <Terminal size={18} />
                 </div>
-                <span className="font-semibold text-gray-800">{category}</span>
+                <ArrowUpRight size={16} className="text-slate-600 group-hover:text-primary-400" />
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-400 font-medium">{TOOLS_DATA.filter(t => t.category === category).length} tools</span>
-                <ChevronRight size={16} className="text-gray-300" />
+              <h4 className="font-bold text-slate-200 mb-1">{mod.name}</h4>
+              <p className="text-xs text-slate-500 line-clamp-2">{mod.description}</p>
+              <div className="mt-3 flex gap-2">
+                {mod.tags.slice(0, 2).map(t => (
+                  <span key={t} className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-mono">#{t}</span>
+                ))}
               </div>
             </div>
           ))}
         </div>
       </section>
+
+      {/* Terminal Snippet */}
+      <div className="rounded-xl bg-black border border-slate-800 p-4 font-mono text-xs shadow-inner">
+        <div className="flex gap-1.5 mb-3 opacity-50">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+        </div>
+        <div className="space-y-1 text-slate-300">
+          <p><span className="text-green-400">➜</span> <span className="text-blue-400">~</span> xyra init --verbose</p>
+          <p className="text-slate-500">[INFO] Loading core modules...</p>
+          <p className="text-slate-500">[INFO] Connecting to neural network...</p>
+          <p className="text-slate-500">[OK] System ready.</p>
+          <p><span className="text-green-400">➜</span> <span className="text-blue-400">~</span> <span className="animate-pulse">_</span></p>
+        </div>
+      </div>
     </div>
   );
 };
 
-const InfoItem: React.FC<{ icon: React.ReactNode; label: string; value: string }> = ({ icon, label, value }) => (
-  <div className="flex items-center gap-2">
-    <div className="text-gray-400">{icon}</div>
-    <div className="overflow-hidden">
-      <p className="text-[9px] font-bold text-gray-400 uppercase leading-none">{label}</p>
-      <p className="text-xs font-bold text-gray-700 truncate">{value}</p>
-    </div>
-  </div>
-);
-
-const getCategoryColor = (cat: string) => {
-  switch (cat) {
-    case 'Security': return 'bg-red-500';
-    case 'Coding': return 'bg-blue-500';
-    case 'Network': return 'bg-purple-500';
-    case 'System': return 'bg-orange-500';
-    case 'Sources': return 'bg-green-500';
-    default: return 'bg-gray-500';
-  }
-};
-
-export default ExploreScreen;
+export default HomeView;
