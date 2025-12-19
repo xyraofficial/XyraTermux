@@ -81,12 +81,12 @@ const Layout: React.FC<LayoutProps> = ({ children, activeView, setView }) => {
 
         {/* Mobile Bottom Nav - iOS Tab Bar Style */}
         <nav className="md:hidden glass-panel border-t border-white/5 pb-safe z-30">
-          <div className="flex justify-around items-center pt-2 px-1">
+          <div className="flex justify-around items-center pt-3 px-1 pb-3">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => setView(item.id as ViewType)}
-                className={`flex flex-col items-center gap-1.5 p-2 min-w-[64px] transition-all duration-300 ${
+                className={`flex flex-col items-center gap-1.5 p-3 min-w-[64px] transition-all duration-300 ${
                   activeView === item.id ? 'text-primary-400 scale-105' : 'text-slate-500'
                 }`}
               >
