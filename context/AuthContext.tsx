@@ -28,19 +28,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
-    authService.getSession().then(session => {
-      setUser(session?.user || null);
-      setLoading(false);
-    });
+    let isMounted = true;
+
+    const initAuth = async () => {
+      try {
+        // Get initial session
+        const session = await authService.getSession();
+        if (isMounted) {
+          setUser(session?.user || null);
+          setLoading(false);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    initAuth();
 
     // Listen for auth changes
     const unsubscribe = authService.onAuthChange((user) => {
-      setUser(user);
-      setLoading(false);
+      if (isMounted) {
+        setUser(user);
+        setLoading(false);
+      }
     });
 
-    return unsubscribe;
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
   }, []);
 
   const value: AuthContextType = {

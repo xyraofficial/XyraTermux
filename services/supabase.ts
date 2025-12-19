@@ -37,14 +37,22 @@ export const authService = {
 
   // Google OAuth - using redirect for mobile compatibility
   signInWithGoogle: async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/`,
-      },
-    });
-    if (error) throw error;
-    return data;
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/` : '',
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
+      if (error) throw error;
+      return data;
+    } catch (err: any) {
+      throw new Error(err.message || 'Failed to initiate Google sign in');
+    }
   },
 
   // Sign Out
