@@ -1,10 +1,14 @@
 
 import React from 'react';
 import { MOCK_STATS, MODULES } from '../constants';
-import { Activity, Zap, Cpu, ArrowUpRight, Terminal } from 'lucide-react';
+import { Activity, Zap, ArrowUpRight, Terminal } from 'lucide-react';
+import { ViewType } from '../types';
 
-// Renaming for clarity in the file map, but logically this is "Dashboard"
-const HomeView: React.FC = () => {
+interface HomeViewProps {
+  onNavigate: (view: ViewType, moduleId?: string) => void;
+}
+
+const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
   return (
     <div className="p-4 md:p-8 space-y-6 animate-in fade-in duration-500">
       
@@ -18,7 +22,10 @@ const HomeView: React.FC = () => {
           Xyra systems are fully operational. Termux environment scanning complete. 
           Ready for command input.
         </p>
-        <button className="bg-white/10 hover:bg-white/20 backdrop-blur border border-white/20 text-white text-xs font-bold py-2 px-4 rounded-lg transition-all flex items-center gap-2">
+        <button 
+          onClick={() => onNavigate('neurolink')}
+          className="bg-white/10 hover:bg-white/20 backdrop-blur border border-white/20 text-white text-xs font-bold py-2 px-4 rounded-lg transition-all flex items-center gap-2 active:scale-95"
+        >
           <Terminal size={14} /> Initiate Quick Scan
         </button>
       </div>
@@ -46,7 +53,11 @@ const HomeView: React.FC = () => {
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {MODULES.slice(0, 3).map((mod) => (
-            <div key={mod.id} className="group p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-primary-500/50 transition-all cursor-pointer">
+            <div 
+              key={mod.id} 
+              onClick={() => onNavigate('modules', mod.id)}
+              className="group p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-primary-500/50 transition-all cursor-pointer active:scale-[0.98]"
+            >
               <div className="flex justify-between items-start mb-2">
                 <div className="bg-slate-800 group-hover:bg-primary-500/20 p-2 rounded-lg text-slate-400 group-hover:text-primary-400 transition-colors">
                   <Terminal size={18} />
@@ -66,7 +77,7 @@ const HomeView: React.FC = () => {
       </section>
 
       {/* Terminal Snippet */}
-      <div className="rounded-xl bg-black border border-slate-800 p-4 font-mono text-xs shadow-inner">
+      <div className="rounded-xl bg-black border border-slate-800 p-4 font-mono text-xs shadow-inner select-all">
         <div className="flex gap-1.5 mb-3 opacity-50">
           <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
           <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>

@@ -8,20 +8,33 @@ import SettingsView from './components/SettingsScreen'; // Settings
 import { ViewType } from './types';
 
 const App: React.FC = () => {
-  const [activeView, setView] = useState<ViewType>('dashboard');
+  const [activeView, setActiveView] = useState<ViewType>('dashboard');
+  const [targetModuleId, setTargetModuleId] = useState<string | null>(null);
+
+  const handleNavigate = (view: ViewType, moduleId?: string) => {
+    setActiveView(view);
+    if (moduleId) {
+      setTargetModuleId(moduleId);
+    }
+  };
 
   const renderView = () => {
     switch (activeView) {
-      case 'dashboard': return <HomeView />;
-      case 'modules': return <LibraryView />;
-      case 'neurolink': return <TerminalView />;
-      case 'settings': return <SettingsView />;
-      default: return <HomeView />;
+      case 'dashboard': 
+        return <HomeView onNavigate={handleNavigate} />;
+      case 'modules': 
+        return <LibraryView initialSelectedId={targetModuleId} clearSelection={() => setTargetModuleId(null)} />;
+      case 'neurolink': 
+        return <TerminalView />;
+      case 'settings': 
+        return <SettingsView />;
+      default: 
+        return <HomeView onNavigate={handleNavigate} />;
     }
   };
 
   return (
-    <Layout activeView={activeView} setView={setView}>
+    <Layout activeView={activeView} setView={setActiveView}>
       {renderView()}
     </Layout>
   );

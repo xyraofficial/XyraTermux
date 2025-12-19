@@ -1,23 +1,44 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MODULES } from '../constants';
 import { Search, Terminal, ChevronRight, Copy, Check } from 'lucide-react';
 import { ModuleItem } from '../types';
 
-const LibraryView: React.FC = () => {
+interface LibraryViewProps {
+  initialSelectedId: string | null;
+  clearSelection: () => void;
+}
+
+const LibraryView: React.FC<LibraryViewProps> = ({ initialSelectedId, clearSelection }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selected, setSelected] = useState<ModuleItem | null>(null);
   const [copied, setCopied] = useState(false);
+
+  // Handle deep link / pre-selection
+  useEffect(() => {
+    if (initialSelectedId) {
+      const found = MODULES.find(m => m.id === initialSelectedId);
+      if (found) {
+        setSelected(found);
+      }
+      // We consume the selection so it doesn't persist if we navigate away and back
+      clearSelection();
+    }
+  }, [initialSelectedId, clearSelection]);
 
   const filtered = MODULES.filter(m => 
     m.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     m.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  const copyCmd = (cmd: string) => {
-    navigator.clipboard.writeText(cmd);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copyCmd = async (cmd: string) => {
+    try {
+      await navigator.clipboard.writeText(cmd);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Clipboard failed', err);
+    }
   };
 
   return (
@@ -44,7 +65,7 @@ const LibraryView: React.FC = () => {
             <div 
               key={item.id}
               onClick={() => setSelected(item)}
-              className={`p-4 rounded-xl border cursor-pointer transition-all ${
+              className={`p-4 rounded-xl border cursor-pointer transition-all active:scale-[0.99] ${
                 selected?.id === item.id 
                   ? 'bg-primary-500/10 border-primary-500/30' 
                   : 'bg-slate-900/30 border-slate-800 hover:bg-slate-800/50'
@@ -96,7 +117,7 @@ const LibraryView: React.FC = () => {
               <div className="bg-black/50 rounded-xl border border-slate-800 overflow-hidden">
                 <div className="flex justify-between items-center px-4 py-2 bg-slate-900/50 border-b border-slate-800">
                   <span className="text-[10px] font-mono text-slate-500 uppercase">Command</span>
-                  <button onClick={() => copyCmd(selected.command)} className="text-slate-400 hover:text-primary-400">
+                  <button onClick={() => copyCmd(selected.command)} className="text-slate-400 hover:text-primary-400 transition-colors">
                     {copied ? <Check size={14} className="text-green-400"/> : <Copy size={14} />}
                   </button>
                 </div>
