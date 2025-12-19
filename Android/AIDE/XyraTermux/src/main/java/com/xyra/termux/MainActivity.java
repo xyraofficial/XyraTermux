@@ -10,7 +10,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebChromeClient;
 import android.webkit.CookieManager;
+import android.webkit.WebSettings;
 import android.widget.FrameLayout;
+import android.content.pm.PackageManager;
 
 public class MainActivity extends Activity {
     private WebView webView;
@@ -30,14 +32,19 @@ public class MainActivity extends Activity {
         webView.setBackgroundColor(0xFF1a1a2e);
         
         // Configure WebView settings for Supabase OAuth compatibility
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setDatabaseEnabled(true);
-        webView.getSettings().setBuiltInZoomControls(false);
-        webView.getSettings().setDisplayZoomControls(false);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setMixedContentMode(android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setBuiltInZoomControls(false);
+        settings.setDisplayZoomControls(false);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        
+        // Fix Google OAuth user agent issue
+        String userAgent = webView.getSettings().getUserAgentString();
+        settings.setUserAgentString(userAgent);
         
         // Enable cookies for OAuth flow
         CookieManager cookieManager = CookieManager.getInstance();
@@ -62,13 +69,11 @@ public class MainActivity extends Activity {
             
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // TRICK: Detect Google OAuth and open in Chrome browser instead of WebView
+                // Keep Google OAuth inside the app using WebView
+                // The WebView handles OAuth flow internally
                 if (url.contains(GOOGLE_AUTH_DOMAIN) || url.contains("accounts.google.com")) {
-                    // Open Google login in system Chrome browser (avoids 403 useragent error)
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(url));
-                    intent.setPackage("com.android.chrome"); // Force Chrome
-                    startActivity(intent);
+                    // Load Google login directly in WebView
+                    view.loadUrl(url);
                     return true;
                 }
                 
