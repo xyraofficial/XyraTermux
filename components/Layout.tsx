@@ -61,7 +61,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeView, setView }) => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col relative overflow-hidden md:py-6 md:pr-6">
+      <main className="flex-1 flex flex-col overflow-hidden md:py-6 md:pr-6">
         {/* Mobile Header - iOS Style */}
         <header className="md:hidden flex items-center justify-between px-5 py-4 pt-safe glass-panel border-b border-white/5 z-20 sticky top-0">
           <div className="flex items-center gap-2.5">
@@ -75,13 +75,13 @@ const Layout: React.FC<LayoutProps> = ({ children, activeView, setView }) => {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto scrollbar-hide md:rounded-3xl md:glass-panel bg-gradient-to-b from-transparent to-slate-900/20 md:border md:border-white/5 relative pb-32">
+        <div className="flex-1 overflow-y-auto scrollbar-hide md:rounded-3xl md:glass-panel bg-gradient-to-b from-transparent to-slate-900/20 md:border md:border-white/5">
            {children}
         </div>
 
         {/* Mobile Bottom Nav - iOS Tab Bar Style */}
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-white/5 z-40" style={{ maxHeight: '130px' }}>
-          <div className="flex justify-around items-center py-3 px-1">
+        <nav className="md:hidden flex-shrink-0 glass-panel border-t border-white/5 z-40">
+          <div className="flex justify-around items-center py-3 px-1 pb-safe">
             {navItems.map((item) => (
               <button
                 key={item.id}
