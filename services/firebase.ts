@@ -5,8 +5,7 @@ import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
@@ -31,15 +30,6 @@ setPersistence(auth, browserLocalPersistence).catch((error: any) => {
 
 const googleProvider = new GoogleAuthProvider();
 
-// Detect if running in WebView
-export const isWebView = (): boolean => {
-  const ua = navigator.userAgent.toLowerCase();
-  return /webview/.test(ua) || 
-         /wv/.test(ua) || 
-         /inappbrowser/.test(ua) ||
-         (/android/.test(ua) && !/chrome/.test(ua));
-};
-
 export const authService = {
   // Email & Password
   signup: (email: string, password: string) => {
@@ -50,14 +40,9 @@ export const authService = {
     return signInWithEmailAndPassword(auth, email, password);
   },
 
-  // Google OAuth (uses redirect for WebView compatibility)
+  // Google OAuth
   signInWithGoogle: () => {
-    return signInWithRedirect(auth, googleProvider);
-  },
-
-  // Handle redirect result (call on app mount)
-  handleRedirectResult: () => {
-    return getRedirectResult(auth);
+    return signInWithPopup(auth, googleProvider);
   },
 
   // Sign Out

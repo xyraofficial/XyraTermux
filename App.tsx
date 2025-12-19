@@ -17,14 +17,6 @@ const AppContent: React.FC = () => {
   const [activeView, setActiveView] = useState<ViewType>('dashboard');
   const [targetModuleId, setTargetModuleId] = useState<string | null>(null);
 
-  React.useEffect(() => {
-    // Handle OAuth redirect result
-    const { authService } = require('./services/firebase');
-    authService.handleRedirectResult().catch((error: any) => {
-      console.error('Redirect result error:', error.message);
-    });
-  }, []);
-
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
