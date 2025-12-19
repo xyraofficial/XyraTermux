@@ -68,8 +68,9 @@ const TerminalView: React.FC = () => {
       </div>
 
       {/* Chat Area */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-6 flex flex-col justify-end">
-        {messages.map((m) => (
+      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 flex flex-col justify-end">
+        <div className="space-y-6">
+          {messages.map((m) => (
           <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[85%] md:max-w-[70%] flex gap-3 ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
               
@@ -107,16 +108,17 @@ const TerminalView: React.FC = () => {
           </div>
         ))}
 
-        {loading && (
-          <div className="flex gap-3">
-            <div className="shrink-0 w-8 h-8 rounded-lg bg-primary-900/20 border border-primary-500/30 flex items-center justify-center text-primary-400">
-               <Loader2 className="animate-spin" size={14} />
+          {loading && (
+            <div className="flex gap-3">
+              <div className="shrink-0 w-8 h-8 rounded-lg bg-primary-900/20 border border-primary-500/30 flex items-center justify-center text-primary-400">
+                 <Loader2 className="animate-spin" size={14} />
+              </div>
+              <div className="flex items-center gap-2 text-xs text-primary-500/70 font-mono animate-pulse mt-2">
+                PROCESSING<span className="tracking-widest">...</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-xs text-primary-500/70 font-mono animate-pulse mt-2">
-              PROCESSING<span className="tracking-widest">...</span>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Input Area */}
