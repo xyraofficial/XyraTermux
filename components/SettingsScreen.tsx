@@ -20,7 +20,7 @@ const SettingsView: React.FC = () => {
   );
 
   return (
-    <div className="p-4 md:p-8 max-w-2xl mx-auto animate-in fade-in duration-500 pb-20">
+    <div className="p-4 md:p-8 max-w-2xl mx-auto animate-in fade-in duration-500" style={{ paddingBottom: '0' }}>
       <h2 className="text-xl font-bold mb-6 text-slate-100">System Configuration</h2>
 
       <div className="space-y-6">

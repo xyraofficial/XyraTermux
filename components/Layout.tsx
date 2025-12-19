@@ -75,13 +75,13 @@ const Layout: React.FC<LayoutProps> = ({ children, activeView, setView }) => {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto scrollbar-hide md:rounded-3xl md:glass-panel bg-gradient-to-b from-transparent to-slate-900/20 md:border md:border-white/5 relative" style={{ paddingBottom: 'calc(120px + env(safe-area-inset-bottom))' }}>
+        <div className="flex-1 overflow-y-auto scrollbar-hide md:rounded-3xl md:glass-panel bg-gradient-to-b from-transparent to-slate-900/20 md:border md:border-white/5 relative" style={{ paddingBottom: '130px' }}>
            {children}
         </div>
 
         {/* Mobile Bottom Nav - iOS Tab Bar Style */}
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-white/5 z-30">
-          <div className="flex justify-around items-center pt-3 px-1" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-white/5 z-40" style={{ maxHeight: '130px' }}>
+          <div className="flex justify-around items-center py-3 px-1">
             {navItems.map((item) => (
               <button
                 key={item.id}
