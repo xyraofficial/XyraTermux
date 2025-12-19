@@ -1,19 +1,28 @@
 
-import { GoogleGenAI } from "@google/genai";
+import Groq from "groq-sdk";
 
 export const askXyra = async (prompt: string): Promise<string> => {
-  // NOTE: This key must be set in the environment where the app runs.
-  // A new instance is created here to ensure we use the most up-to-date API key.
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  
+  const apiKey = process.env.GROQ_API_KEY;
+
+  // Check if API key is missing or empty
+  if (!apiKey || apiKey.trim() === '') {
+    console.error("GROQ_API_KEY is missing.");
+    return "SYSTEM ERROR: API Key configuration missing. Please ensure GROQ_API_KEY is set in your environment variables.";
+  }
+
   try {
-    const response = await ai.models.generateContent({
-      // Xyra is an advanced assistant specializing in Linux and coding, 
-      // which qualifies as a Complex Text Task; hence using gemini-3-pro-preview.
-      model: 'gemini-3-pro-preview',
-      contents: prompt,
-      config: {
-        systemInstruction: `You are Xyra, an advanced Termux cyber-assistant. 
+    // Initialize the client strictly when needed (Lazy Initialization) with the explicit key
+    // This prevents the app from crashing on load if the key is missing in the global scope.
+    const groq = new Groq({ 
+      apiKey: apiKey, 
+      dangerouslyAllowBrowser: true 
+    });
+
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: `You are Xyra, an advanced Termux cyber-assistant. 
         Your environment is a futuristic mobile terminal dashboard.
         
         Guidelines:
@@ -23,14 +32,29 @@ export const askXyra = async (prompt: string): Promise<string> => {
         4.  **Safety**: If a user asks for malicious commands, decline professionally and suggest educational alternatives.
         5.  **Responsiveness**: Keep answers short enough to be readable on mobile screens.
         
-        If asked "Who are you?", reply: "I am Xyra, your neural interface for the Termux environment."`,
-      },
+        If asked "Who are you?", reply: "I am Xyra, your neural interface for the Termux environment."`
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      // Using Llama 3.3 70B for high-quality reasoning and coding capabilities
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.5,
+      max_tokens: 1024,
+      top_p: 1,
+      stream: false,
+      stop: null
     });
 
-    // Access the .text property directly as it is a getter, not a function call.
-    return response.text || "Xyra connection interrupted.";
-  } catch (error) {
-    console.error("Xyra API Error:", error);
-    return "ERR_CONNECTION_REFUSED: Neural link unstable.";
+    return chatCompletion.choices[0]?.message?.content || "Xyra system offline.";
+  } catch (error: any) {
+    console.error("Xyra API Error (Groq):", error);
+    // Handle specific Groq error for missing key if it somehow slips through
+    if (error.message?.includes("API key")) {
+         return "SYSTEM ERROR: Invalid API Key configuration.";
+    }
+    return `ERR_CONNECTION_REFUSED: ${error.message || "Neural link unstable."}`;
   }
 };
