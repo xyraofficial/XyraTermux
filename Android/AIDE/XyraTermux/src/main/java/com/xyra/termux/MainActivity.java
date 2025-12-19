@@ -1,6 +1,8 @@
 package com.xyra.termux;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -13,6 +15,8 @@ import android.widget.FrameLayout;
 public class MainActivity extends Activity {
     private WebView webView;
     private View loadingScreen;
+    private static final String GOOGLE_AUTH_DOMAIN = "accounts.google.com";
+    private static final String SUPABASE_AUTH_DOMAIN = "pikkpwouwavgrpanrdzc.supabase.co";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +29,7 @@ public class MainActivity extends Activity {
         webView = new WebView(this);
         webView.setBackgroundColor(0xFF1a1a2e);
         
-        // Configure WebView settings for Firebase OAuth compatibility
+        // Configure WebView settings for Supabase OAuth compatibility
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setDatabaseEnabled(true);
@@ -40,7 +44,7 @@ public class MainActivity extends Activity {
         cookieManager.setAcceptCookie(true);
         cookieManager.acceptThirdPartyCookies(webView);
         
-        // Set WebView client for navigation
+        // Set WebView client for navigation - INTERCEPT GOOGLE OAUTH
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -53,16 +57,33 @@ public class MainActivity extends Activity {
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
-                // Log errors but continue loading
                 System.err.println("WebView Error: " + errorCode + " - " + description);
             }
             
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // TRICK: Detect Google OAuth and open in Chrome browser instead of WebView
+                if (url.contains(GOOGLE_AUTH_DOMAIN) || url.contains("accounts.google.com")) {
+                    // Open Google login in system Chrome browser (avoids 403 useragent error)
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    intent.setPackage("com.android.chrome"); // Force Chrome
+                    startActivity(intent);
+                    return true;
+                }
+                
+                // Handle OAuth callback from Supabase
+                if (url.contains(SUPABASE_AUTH_DOMAIN) && url.contains("auth/v1/callback")) {
+                    view.loadUrl(url);
+                    return true;
+                }
+                
+                // Load other URLs normally
                 if (url.startsWith("https://")) {
                     view.loadUrl(url);
                     return true;
                 }
+                
                 return false;
             }
         });
@@ -83,6 +104,18 @@ public class MainActivity extends Activity {
         // Load Vercel app
         webView.loadUrl("https://xyra-termux.vercel.app/");
         setContentView(mainContainer);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        
+        // Handle deep link from OAuth callback
+        Uri uri = intent.getData();
+        if (uri != null && uri.toString().contains("auth/v1/callback")) {
+            // Load the callback URL in WebView
+            webView.loadUrl(uri.toString());
+        }
     }
 
     public void onBackPressed() {
