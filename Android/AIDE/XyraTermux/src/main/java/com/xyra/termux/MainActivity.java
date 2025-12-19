@@ -42,9 +42,10 @@ public class MainActivity extends Activity {
         settings.setLoadWithOverviewMode(true);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         
-        // Fix Google OAuth user agent issue
-        String userAgent = webView.getSettings().getUserAgentString();
-        settings.setUserAgentString(userAgent);
+        // Fix Google OAuth user agent issue - Use Chrome user agent
+        // This prevents Google from blocking with "disallowed_useragent" error
+        String chromeUserAgent = "Mozilla/5.0 (Linux; Android " + android.os.Build.VERSION.RELEASE + ") AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
+        settings.setUserAgentString(chromeUserAgent);
         
         // Enable cookies for OAuth flow
         CookieManager cookieManager = CookieManager.getInstance();
