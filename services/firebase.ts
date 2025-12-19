@@ -5,7 +5,8 @@ import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
@@ -29,6 +30,8 @@ setPersistence(auth, browserLocalPersistence).catch((error: any) => {
 });
 
 const googleProvider = new GoogleAuthProvider();
+googleProvider.addScope('profile');
+googleProvider.addScope('email');
 
 export const authService = {
   // Email & Password
@@ -40,9 +43,14 @@ export const authService = {
     return signInWithEmailAndPassword(auth, email, password);
   },
 
-  // Google OAuth
+  // Google OAuth - using redirect for mobile compatibility
   signInWithGoogle: () => {
-    return signInWithPopup(auth, googleProvider);
+    return signInWithRedirect(auth, googleProvider);
+  },
+
+  // Handle redirect result (for mobile redirect flow)
+  handleRedirectResult: () => {
+    return getRedirectResult(auth);
   },
 
   // Sign Out

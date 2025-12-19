@@ -18,6 +18,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Handle redirect result from Google OAuth
+    authService.handleRedirectResult().catch((error) => {
+      console.error('Redirect result error:', error);
+    });
+
     const unsubscribe = authService.onAuthChange((user) => {
       setUser(user);
       setLoading(false);
