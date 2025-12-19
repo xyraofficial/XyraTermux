@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.WebChromeClient;
 import android.widget.FrameLayout;
 
 public class MainActivity extends Activity {
@@ -22,7 +23,18 @@ public class MainActivity extends Activity {
         
         webView = new WebView(this);
         webView.setBackgroundColor(0xFF1a1a2e);
+        
+        // Configure WebView settings for better compatibility
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setDatabaseEnabled(true);
+        webView.getSettings().setBuiltInZoomControls(false);
+        webView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUserAgentString(webView.getSettings().getUserAgentString() + " XyraTermux/1.0");
+        
+        // Set WebView client for navigation
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -31,13 +43,26 @@ public class MainActivity extends Activity {
                     loadingScreen.setVisibility(View.GONE);
                 }
             }
+            
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.startsWith("https://")) {
+                    view.loadUrl(url);
+                    return true;
+                }
+                return false;
+            }
         });
+        
+        // Set WebChrome client for JS dialogs and console logs
+        webView.setWebChromeClient(new WebChromeClient());
         
         loadingScreen = getLayoutInflater().inflate(R.layout.loading_screen, null);
         
         mainContainer.addView(webView);
         mainContainer.addView(loadingScreen);
         
+        // Load Vercel app
         webView.loadUrl("https://xyra-termux.vercel.app/");
         setContentView(mainContainer);
     }
