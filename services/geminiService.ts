@@ -2,17 +2,15 @@
 import Groq from "groq-sdk";
 
 export const askXyra = async (prompt: string): Promise<string> => {
+  // Strictly use environment variable.
   const apiKey = process.env.GROQ_API_KEY;
 
-  // Check if API key is missing or empty
   if (!apiKey || apiKey.trim() === '') {
-    console.error("GROQ_API_KEY is missing.");
+    console.error("API Key is missing.");
     return "SYSTEM ERROR: API Key configuration missing. Please ensure GROQ_API_KEY is set in your environment variables.";
   }
 
   try {
-    // Initialize the client strictly when needed (Lazy Initialization) with the explicit key
-    // This prevents the app from crashing on load if the key is missing in the global scope.
     const groq = new Groq({ 
       apiKey: apiKey, 
       dangerouslyAllowBrowser: true 
@@ -39,7 +37,6 @@ export const askXyra = async (prompt: string): Promise<string> => {
           content: prompt
         }
       ],
-      // Using Llama 3.3 70B for high-quality reasoning and coding capabilities
       model: "llama-3.3-70b-versatile",
       temperature: 0.5,
       max_tokens: 1024,
@@ -51,7 +48,6 @@ export const askXyra = async (prompt: string): Promise<string> => {
     return chatCompletion.choices[0]?.message?.content || "Xyra system offline.";
   } catch (error: any) {
     console.error("Xyra API Error (Groq):", error);
-    // Handle specific Groq error for missing key if it somehow slips through
     if (error.message?.includes("API key")) {
          return "SYSTEM ERROR: Invalid API Key configuration.";
     }
