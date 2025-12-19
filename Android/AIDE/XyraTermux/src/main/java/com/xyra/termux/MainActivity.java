@@ -32,7 +32,6 @@ public class MainActivity extends Activity {
         webView.getSettings().setDisplayZoomControls(false);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUserAgentString(webView.getSettings().getUserAgentString() + " XyraTermux/1.0");
         
         // Set WebView client for navigation
         webView.setWebViewClient(new WebViewClient() {
