@@ -5,6 +5,8 @@ import HomeView from './components/ExploreScreen'; // Dashboard
 import LibraryView from './components/ToolsScreen'; // Modules
 import TerminalView from './components/AssistantScreen'; // Neurolink
 import SettingsView from './components/SettingsScreen'; // Settings
+import HelpView from './components/HelpScreen'; // Help
+import FeedbackView from './components/FeedbackScreen'; // Feedback
 import { ViewType } from './types';
 
 const App: React.FC = () => {
@@ -28,6 +30,10 @@ const App: React.FC = () => {
         return <TerminalView />;
       case 'settings': 
         return <SettingsView />;
+      case 'help': 
+        return <HelpView />;
+      case 'feedback': 
+        return <FeedbackView />;
       default: 
         return <HomeView onNavigate={handleNavigate} />;
     }

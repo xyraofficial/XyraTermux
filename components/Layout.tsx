@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ViewType } from '../types';
-import { LayoutDashboard, Terminal, Package, Settings, Hexagon } from 'lucide-react';
+import { LayoutDashboard, Terminal, Package, Settings, Hexagon, HelpCircle, MessageSquare } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,6 +14,8 @@ const Layout: React.FC<LayoutProps> = ({ children, activeView, setView }) => {
     { id: 'dashboard', label: 'Home', icon: LayoutDashboard },
     { id: 'modules', label: 'Tools', icon: Package },
     { id: 'neurolink', label: 'Xyra AI', icon: Terminal },
+    { id: 'help', label: 'Help', icon: HelpCircle },
+    { id: 'feedback', label: 'Feedback', icon: MessageSquare },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 

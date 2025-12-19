@@ -1,5 +1,5 @@
 
-export type ViewType = 'dashboard' | 'modules' | 'neurolink' | 'settings';
+export type ViewType = 'dashboard' | 'modules' | 'neurolink' | 'settings' | 'help' | 'feedback';
 
 export interface ModuleItem {
   id: string;
