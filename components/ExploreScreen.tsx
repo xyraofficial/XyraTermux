@@ -10,7 +10,7 @@ interface HomeViewProps {
 
 const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
   return (
-    <div className="p-4 md:p-8 space-y-6 animate-in fade-in duration-500">
+    <div className="p-4 md:p-8 space-y-6 animate-in fade-in duration-500 pb-20">
       
       {/* Welcome Banner */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary-600 to-blue-600 p-6 shadow-lg shadow-primary-500/10">

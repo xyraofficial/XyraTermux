@@ -75,7 +75,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeView, setView }) => {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto scrollbar-hide md:rounded-3xl md:glass-panel bg-gradient-to-b from-transparent to-slate-900/20 md:border md:border-white/5 relative" style={{ paddingBottom: 'max(120px, calc(100px + env(safe-area-inset-bottom)))' }}>
+        <div className="flex-1 overflow-y-auto scrollbar-hide md:rounded-3xl md:glass-panel bg-gradient-to-b from-transparent to-slate-900/20 md:border md:border-white/5 relative" style={{ paddingBottom: 'calc(120px + env(safe-area-inset-bottom))' }}>
            {children}
         </div>
 
