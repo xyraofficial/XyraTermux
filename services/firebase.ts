@@ -31,6 +31,15 @@ setPersistence(auth, browserLocalPersistence).catch((error: any) => {
 
 const googleProvider = new GoogleAuthProvider();
 
+// Detect if running in WebView
+export const isWebView = (): boolean => {
+  const ua = navigator.userAgent.toLowerCase();
+  return /webview/.test(ua) || 
+         /wv/.test(ua) || 
+         /inappbrowser/.test(ua) ||
+         (/android/.test(ua) && !/chrome/.test(ua));
+};
+
 export const authService = {
   // Email & Password
   signup: (email: string, password: string) => {
