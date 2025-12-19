@@ -31,16 +31,23 @@ public class MainActivity extends Activity {
         webView = new WebView(this);
         webView.setBackgroundColor(0xFF1a1a2e);
         
-        // Configure WebView settings for Supabase OAuth compatibility
+        // Configure WebView settings for optimal performance and OAuth compatibility
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
-        settings.setBuiltInZoomControls(false);
-        settings.setDisplayZoomControls(false);
+        
+        // Zoom and viewport settings - Fix UI rendering issues
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
+        settings.setSupportZoom(true);
+        settings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
+        
+        // Performance optimizations - Reduce delay
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setEnableSmoothTransition(true);
         
         // Fix Google OAuth user agent issue - Use Chrome user agent
         // This prevents Google from blocking with "disallowed_useragent" error
