@@ -7,11 +7,30 @@ import TerminalView from './components/AssistantScreen'; // Neurolink
 import SettingsView from './components/SettingsScreen'; // Settings
 import HelpView from './components/HelpScreen'; // Help
 import FeedbackView from './components/FeedbackScreen'; // Feedback
+import AuthScreen from './components/AuthScreen';
+import ProfileScreen from './components/ProfileScreen';
 import { ViewType } from './types';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
+  const { user, loading } = useAuth();
   const [activeView, setActiveView] = useState<ViewType>('dashboard');
   const [targetModuleId, setTargetModuleId] = useState<string | null>(null);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-slate-700 border-t-primary-500 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-slate-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <AuthScreen onAuthSuccess={() => {}} />;
+  }
 
   const handleNavigate = (view: ViewType, moduleId?: string) => {
     setActiveView(view);
@@ -34,6 +53,8 @@ const App: React.FC = () => {
         return <HelpView />;
       case 'feedback': 
         return <FeedbackView />;
+      case 'profile':
+        return <ProfileScreen onLogout={() => setActiveView('dashboard')} />;
       default: 
         return <HomeView onNavigate={handleNavigate} />;
     }
@@ -43,6 +64,14 @@ const App: React.FC = () => {
     <Layout activeView={activeView} setView={setActiveView}>
       {renderView()}
     </Layout>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 };
 

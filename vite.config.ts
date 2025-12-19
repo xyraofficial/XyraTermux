@@ -10,14 +10,7 @@ export default defineConfig(({ mode }) => {
     server: {
       host: '0.0.0.0',
       port: 5000,
-      allowedHosts: true,
-      proxy: {
-        '/api': {
-          target: 'http://localhost:3001',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '/api')
-        }
-      }
+      allowedHosts: true
     },
     define: {
       'process.env.GROQ_API_KEY': JSON.stringify(
