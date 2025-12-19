@@ -1,9 +1,19 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User } from 'firebase/auth';
-import { auth, authService } from '../services/firebase';
+import { authService } from '../services/supabase';
+
+interface AuthUser {
+  id: string;
+  email?: string;
+  user_metadata?: {
+    full_name?: string;
+    avatar_url?: string;
+  };
+  created_at?: string;
+  email_confirmed_at?: string;
+}
 
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
   loading: boolean;
   signup: (email: string, password: string) => Promise<any>;
   login: (email: string, password: string) => Promise<any>;
@@ -14,15 +24,17 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Handle redirect result from Google OAuth
-    authService.handleRedirectResult().catch((error) => {
-      console.error('Redirect result error:', error);
+    // Get initial session
+    authService.getSession().then(session => {
+      setUser(session?.user || null);
+      setLoading(false);
     });
 
+    // Listen for auth changes
     const unsubscribe = authService.onAuthChange((user) => {
       setUser(user);
       setLoading(false);

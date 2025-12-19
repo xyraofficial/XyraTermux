@@ -35,7 +35,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
       onAuthSuccess();
     } catch (err: any) {
       const errorMessage = err.message || 'Authentication failed';
-      setError(errorMessage.split('Firebase: ')[1] || errorMessage);
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

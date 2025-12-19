@@ -41,3 +41,9 @@ externalPort = 3000
 deploymentTarget = "static"
 build = ["npm", "run", "build"]
 publicDir = "dist"
+
+[userenv]
+
+[userenv.shared]
+VITE_SUPABASE_URL = "https://pikkpwouwavgrpanrdzc.supabase.co"
+VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpa2twd291d2F2Z3JwYW5yZHpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxNjUzMzIsImV4cCI6MjA4MTc0MTMzMn0.mt4yemqadZwGZ2Fq-bPu8UyPkfv9Z8xS16eQ8z5c4pU"

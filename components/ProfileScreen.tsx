@@ -27,8 +27,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onLogout }) => {
 
   if (!user) return null;
 
-  const createdDate = user.metadata?.creationTime 
-    ? new Date(user.metadata.creationTime).toLocaleDateString('en-US', {
+  const createdDate = user.created_at
+    ? new Date(user.created_at).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
@@ -51,9 +51,9 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onLogout }) => {
         {/* Avatar & Name */}
         <div className="flex items-start gap-6 mb-8 pb-8 border-b border-slate-700/30">
           <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center flex-shrink-0">
-            {user.photoURL ? (
+            {user.user_metadata?.avatar_url ? (
               <img 
-                src={user.photoURL} 
+                src={user.user_metadata.avatar_url} 
                 alt="Avatar" 
                 className="w-full h-full rounded-full object-cover"
               />
@@ -63,7 +63,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onLogout }) => {
           </div>
           <div className="flex-1">
             <h3 className="text-2xl font-bold text-white mb-1">
-              {user.displayName || 'User'}
+              {user.user_metadata?.full_name || 'User'}
             </h3>
             <p className="text-sm text-slate-400 mb-3">Active since {createdDate}</p>
             <div className="flex items-center gap-2">
@@ -102,14 +102,14 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onLogout }) => {
               <Settings size={18} className="text-primary-400" />
               <div>
                 <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">User ID</p>
-                <p className="text-white font-mono text-sm break-all">{user.uid.substring(0, 16)}...</p>
+                <p className="text-white font-mono text-sm break-all">{user.id.substring(0, 16)}...</p>
               </div>
             </div>
             <button
-              onClick={() => copyToClipboard(user.uid, 'uid')}
+              onClick={() => copyToClipboard(user.id, 'id')}
               className="opacity-0 group-hover:opacity-100 transition-opacity"
             >
-              {copied === 'uid' ? (
+              {copied === 'id' ? (
                 <CheckCircle size={18} className="text-green-400" />
               ) : (
                 <Copy size={18} className="text-slate-400 hover:text-white" />
@@ -135,14 +135,14 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onLogout }) => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-white font-medium">Email Verified</p>
-              <p className="text-sm text-slate-400">{user.emailVerified ? '✓ Yes' : 'Pending'}</p>
+              <p className="text-sm text-slate-400">{user.email_confirmed_at ? '✓ Yes' : 'Pending'}</p>
             </div>
             <div className={`px-4 py-2 rounded-full text-xs font-semibold ${
-              user.emailVerified 
+              user.email_confirmed_at
                 ? 'bg-green-500/20 text-green-300' 
                 : 'bg-yellow-500/20 text-yellow-300'
             }`}>
-              {user.emailVerified ? 'Active' : 'Pending'}
+              {user.email_confirmed_at ? 'Active' : 'Pending'}
             </div>
           </div>
         </div>
