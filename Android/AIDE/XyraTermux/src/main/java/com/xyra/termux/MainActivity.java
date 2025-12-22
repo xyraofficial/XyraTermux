@@ -96,8 +96,8 @@ public class MainActivity extends Activity {
         
         mainContainer.addView(webView);
         
-        // Load Termux Control app
-        webView.loadUrl("https://termux-control.vercel.app/");
+        // Load Xyra Termux app
+        webView.loadUrl("https://xyra-termux.vercel.app/");
         setContentView(mainContainer);
         
         // Start auto cache clearing for optimal performance
