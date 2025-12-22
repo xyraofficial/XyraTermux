@@ -10,7 +10,24 @@ export default defineConfig(({ mode }) => {
     server: {
       host: '0.0.0.0',
       port: 5000,
-      allowedHosts: true
+      allowedHosts: true,
+      hmr: {
+        protocol: 'ws',
+        host: 'localhost',
+        port: 5000
+      },
+      middlewareMode: false
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ['react', 'react-dom']
+          }
+        }
+      },
+      cssCodeSplit: false,
+      minify: 'terser'
     },
     define: {
       'process.env.GROQ_API_KEY': JSON.stringify(
