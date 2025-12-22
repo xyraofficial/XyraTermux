@@ -123,7 +123,7 @@ const TerminalView: React.FC = () => {
       <div className="shrink-0 p-4 bg-slate-950 border-t border-slate-800">
         <div className="flex items-end gap-2 bg-slate-900/50 border border-slate-800 rounded-xl p-2 focus-within:border-primary-500/50 focus-within:ring-1 focus-within:ring-primary-500/20 transition-all">
           <textarea
-            className="flex-1 bg-transparent border-none focus:ring-0 text-sm text-slate-200 placeholder:text-slate-600 resize-none h-10 max-h-24 py-2 px-2 scrollbar-hide font-mono"
+            className="flex-1 bg-transparent border-none focus:ring-0 text-sm text-white placeholder:text-slate-500 resize-none h-10 max-h-24 py-2 px-2 scrollbar-hide font-mono caret-primary-500 outline-none"
             placeholder="Ask Xyra command..."
             rows={1}
             value={input}

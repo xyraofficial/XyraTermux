@@ -103,7 +103,7 @@ const FeedbackScreen: React.FC = () => {
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             placeholder="Your name"
-            className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-primary-500/50 focus:ring-1 focus:ring-primary-500/20 transition-all"
+            className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-primary-500/50 focus:ring-1 focus:ring-primary-500/20 transition-all caret-primary-500"
           />
         </div>
 
@@ -115,7 +115,7 @@ const FeedbackScreen: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your.email@example.com"
-            className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-primary-500/50 focus:ring-1 focus:ring-primary-500/20 transition-all"
+            className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-primary-500/50 focus:ring-1 focus:ring-primary-500/20 transition-all caret-primary-500"
           />
         </div>
 
@@ -127,7 +127,7 @@ const FeedbackScreen: React.FC = () => {
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             placeholder="What is your feedback about?"
-            className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-primary-500/50 focus:ring-1 focus:ring-primary-500/20 transition-all"
+            className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-primary-500/50 focus:ring-1 focus:ring-primary-500/20 transition-all caret-primary-500"
           />
         </div>
 
@@ -139,7 +139,7 @@ const FeedbackScreen: React.FC = () => {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Share your thoughts, report a bug, or suggest a feature..."
             rows={6}
-            className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-primary-500/50 focus:ring-1 focus:ring-primary-500/20 transition-all resize-none"
+            className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-primary-500/50 focus:ring-1 focus:ring-primary-500/20 transition-all resize-none caret-primary-500 scrollbar-hide"
           />
         </div>
 
