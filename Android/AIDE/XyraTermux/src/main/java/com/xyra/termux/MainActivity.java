@@ -28,13 +28,13 @@ public class MainActivity extends Activity {
         webView = new WebView(this);
         webView.setBackgroundColor(0xFF1a1a2e);
         
-        // Configure WebView settings for optimal performance and OAuth compatibility
+        // Configure WebView settings
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
         
-        // Zoom and viewport settings - Fix UI rendering issues
+        // Zoom and viewport settings
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
         settings.setBuiltInZoomControls(true);
@@ -42,26 +42,20 @@ public class MainActivity extends Activity {
         settings.setSupportZoom(true);
         settings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
         
-        // Performance optimizations - Reduce delay
+        // Performance optimizations
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setEnableSmoothTransition(true);
         
-        // Fix Google OAuth user agent issue - Use Chrome user agent
-        // This prevents Google from blocking with "disallowed_useragent" error
-        String chromeUserAgent = "Mozilla/5.0 (Linux; Android " + android.os.Build.VERSION.RELEASE + ") AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
-        settings.setUserAgentString(chromeUserAgent);
-        
-        // Enable cookies for OAuth flow
+        // Enable cookies
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
         cookieManager.acceptThirdPartyCookies(webView);
         
-        // Set WebView client for navigation - INTERCEPT GOOGLE OAUTH
+        // Set WebView client
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                // Page loaded
             }
             
             @Override
@@ -81,7 +75,7 @@ public class MainActivity extends Activity {
             }
         });
         
-        // Set WebChrome client for JS dialogs and console logs
+        // Set WebChrome client for JS dialogs
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
@@ -91,19 +85,16 @@ public class MainActivity extends Activity {
         
         mainContainer.addView(webView);
         
-        // Load Vercel app
-        webView.loadUrl("https://xyra-termux.vercel.app/");
+        // Load Termux Control app
+        webView.loadUrl("https://termux-control.vercel.app/");
         setContentView(mainContainer);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        
-        // Handle deep link from OAuth callback
         Uri uri = intent.getData();
-        if (uri != null && uri.toString().contains("auth/v1/callback")) {
-            // Load the callback URL in WebView
+        if (uri != null) {
             webView.loadUrl(uri.toString());
         }
     }
