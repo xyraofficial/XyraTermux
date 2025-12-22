@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
         }
       },
       cssCodeSplit: false,
-      minify: 'terser'
+      minify: 'esbuild'
     },
     define: {
       'process.env.GROQ_API_KEY': JSON.stringify(
