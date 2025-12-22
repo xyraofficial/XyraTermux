@@ -46,6 +46,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
+          <img src="/logo.png" alt="Xyra Termux Logo" className="w-20 h-20 mx-auto mb-4 drop-shadow-lg" />
           <h1 className="text-3xl font-bold text-white mb-2">Xyra Termux</h1>
           <p className="text-slate-400">{isLogin ? 'Welcome Back' : 'Create Account'}</p>
         </div>

@@ -1,40 +1,41 @@
-apply plugin: 'com.android.application'
+buildscript {
+    ext.build_gradle_version = '7.0.2'
 
-android {
-    compileSdkVersion 34
-    buildToolsVersion "34.0.0"
-
-    defaultConfig {
-        applicationId "com.xyra.termux"
-        minSdkVersion 21
-        targetSdkVersion 34
-        versionCode 1
-        versionName "1.0"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-        debug {
-            minifyEnabled false
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    // Use local libs folder - no internet download needed
     repositories {
-        flatDir {
-            dirs 'libs'
-        }
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
+        maven { url 'https://dl.bintray.com/ppartisan/maven/' }
+        maven { url "https://clojars.org/repo/" }
+        maven { url "https://jitpack.io" }
+        google()
+        mavenLocal()
+        mavenCentral()
     }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$build_gradle_version"
+        
+    }
+    
+}
+allprojects {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' } 
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
+        maven { url 'https://dl.bintray.com/ppartisan/maven/' }
+        maven { url "https://clojars.org/repo/" }
+        maven { url "https://jitpack.io" }
+        mavenLocal()
+        mavenCentral()
+        google()
+    }
+	
+
+        
+	
 }
 
-dependencies {
-    // No external dependencies - using framework only
-    // All necessary classes are from Android framework
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
