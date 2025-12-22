@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import HomeView from './components/ExploreScreen'; // Dashboard
 import LibraryView from './components/ToolsScreen'; // Modules
@@ -11,6 +11,7 @@ import AuthScreen from './components/AuthScreen';
 import ProfileScreen from './components/ProfileScreen';
 import { ViewType } from './types';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { initializeCacheClearing } from './services/cacheManager';
 
 const AppContent: React.FC = () => {
   const { user, loading } = useAuth();
