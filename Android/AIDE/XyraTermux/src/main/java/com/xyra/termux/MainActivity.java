@@ -16,8 +16,6 @@ import android.content.pm.PackageManager;
 
 public class MainActivity extends Activity {
     private WebView webView;
-    private static final String GOOGLE_AUTH_DOMAIN = "accounts.google.com";
-    private static final String SUPABASE_AUTH_DOMAIN = "pikkpwouwavgrpanrdzc.supabase.co";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,26 +72,11 @@ public class MainActivity extends Activity {
             
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // Keep Google OAuth inside the app using WebView
-                // The WebView handles OAuth flow internally
-                if (url.contains(GOOGLE_AUTH_DOMAIN) || url.contains("accounts.google.com")) {
-                    // Load Google login directly in WebView
-                    view.loadUrl(url);
-                    return true;
-                }
-                
-                // Handle OAuth callback from Supabase
-                if (url.contains(SUPABASE_AUTH_DOMAIN) && url.contains("auth/v1/callback")) {
-                    view.loadUrl(url);
-                    return true;
-                }
-                
-                // Load other URLs normally
+                // Load all HTTPS URLs
                 if (url.startsWith("https://")) {
                     view.loadUrl(url);
                     return true;
                 }
-                
                 return false;
             }
         });

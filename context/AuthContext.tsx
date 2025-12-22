@@ -17,7 +17,6 @@ interface AuthContextType {
   loading: boolean;
   signup: (email: string, password: string) => Promise<any>;
   login: (email: string, password: string) => Promise<any>;
-  signInWithGoogle: () => Promise<any>;
   logout: () => Promise<void>;
 }
 
@@ -66,7 +65,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loading,
     signup: authService.signup,
     login: authService.login,
-    signInWithGoogle: authService.signInWithGoogle,
     logout: authService.logout
   };
 
