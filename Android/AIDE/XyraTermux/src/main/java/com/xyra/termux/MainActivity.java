@@ -13,6 +13,7 @@ import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.widget.FrameLayout;
 import android.content.pm.PackageManager;
+import android.view.ViewGroup;
 
 public class MainActivity extends Activity {
     private WebView webView;
@@ -24,29 +25,40 @@ public class MainActivity extends Activity {
         
         FrameLayout mainContainer = new FrameLayout(this);
         mainContainer.setBackgroundColor(0xFF1a1a2e);
+        mainContainer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         
         webView = new WebView(this);
         webView.setBackgroundColor(0xFF1a1a2e);
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         
-        // Configure WebView settings
+        // Configure WebView settings for performance
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
-        settings.setDatabaseEnabled(true);
+        settings.setDatabaseEnabled(false);
         
-        // Zoom and viewport settings
+        // Caching configuration - improves performance significantly
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        String cacheDir = getApplicationContext().getCacheDir().getAbsolutePath();
+        settings.setAppCachePath(cacheDir);
+        settings.setAppCacheEnabled(true);
+        settings.setAppCacheMaxSize(50 * 1024 * 1024);
+        
+        // Viewport and zoom settings for smooth experience
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
-        settings.setBuiltInZoomControls(true);
+        settings.setSupportZoom(false);
+        settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
-        settings.setSupportZoom(true);
-        settings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
         
         // Performance optimizations
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setEnableSmoothTransition(true);
+        settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+        settings.setDefaultTextEncodingName("utf-8");
+        settings.setUserAgentString(settings.getUserAgentString() + " XyraTermux/1.0");
         
-        // Enable cookies
+        // Enable cookies for authentication
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
         cookieManager.acceptThirdPartyCookies(webView);
