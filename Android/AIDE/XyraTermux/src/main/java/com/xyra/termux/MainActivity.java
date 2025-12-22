@@ -39,10 +39,6 @@ public class MainActivity extends Activity {
         
         // Caching configuration - improves performance significantly
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        String cacheDir = getApplicationContext().getCacheDir().getAbsolutePath();
-        settings.setAppCachePath(cacheDir);
-        settings.setAppCacheEnabled(true);
-        settings.setAppCacheMaxSize(50 * 1024 * 1024);
         
         // Viewport and zoom settings for smooth experience
         settings.setUseWideViewPort(true);
